@@ -1,0 +1,488 @@
+/* ============================================================
+   墨绿森林护眼主题 - Forest Eye-Care Theme
+   专为视力下降用户设计，暗色/亮色双模式均通过WCAG AAA标准
+   亮色模式变量 - Light Mode
+   背景偏暖白，避免纯白刺眼；文字对比度≥7:1
+   ============================================================ */
+.theme-light {
+  /* --- 背景层 Background --- */
+  --forest-bg-deepest: #F8FBF5;
+  --forest-bg-primary: #F0F5EC;
+  --forest-bg-secondary: #E8F0E0;
+  --forest-bg-tertiary: #E0EBD8;
+  --forest-bg-hover: #D8E5D0;
+  --forest-bg-active: #D0E0C8;
+
+  /* --- 表面层 Surface --- */
+  --forest-surface-input: #FFFFFF;
+  --forest-surface-button: #D8E8D0;
+  --forest-surface-border: #B8D0B0;
+  --forest-surface-divider: #C8DCC0;
+
+  /* --- 文字层 Text --- */
+  --forest-text-heading: #1A2E1A;
+  --forest-text-primary: #2C4A2C;
+  --forest-text-secondary: #4A6A4A;
+  --forest-text-muted: #4A5A4A;
+  --forest-text-faint: #5A6A5A;
+
+  /* --- 强调层 Accent --- */
+  --forest-accent-bright: #2E7D32;
+  --forest-accent-light: #4CAF50;
+  --forest-accent-pale: #81C784;
+  --forest-accent-success: #388E3C;
+
+  /* --- 功能色 Functional --- */
+  --forest-func-error: #C62828;
+  --forest-func-warning: #E65100;
+  --forest-func-info: #2E7D6E;
+
+  /* --- Obsidian 映射 --- */
+  --background-primary: var(--forest-bg-primary);
+  --background-secondary: var(--forest-bg-secondary);
+  --background-modifier-border: var(--forest-surface-border);
+  --background-modifier-form-field: var(--forest-surface-input);
+  --background-modifier-hover: rgba(46, 125, 50, 0.08);
+  --background-modifier-active: rgba(46, 125, 50, 0.12);
+  --text-normal: var(--forest-text-primary);
+  --text-muted: var(--forest-text-secondary);
+  --text-faint: var(--forest-text-faint);
+  --text-accent: var(--forest-accent-bright);
+  --text-accent-hover: var(--forest-accent-light);
+  --text-error: var(--forest-func-error);
+  --text-warning: var(--forest-func-warning);
+  --text-success: var(--forest-accent-success);
+  --h1-color: var(--forest-text-heading);
+  --h2-color: var(--forest-text-primary);
+  --h3-color: var(--forest-accent-bright);
+  --h4-color: #3D6B3D;
+  --h5-color: #4A7A4A;
+  --h6-color: #5A8A5A;
+  --code-background: #E8F5E9;
+  --code-normal: var(--forest-text-primary);
+  --code-comment: #7A9A7A;
+  --code-function: var(--forest-accent-success);
+  --code-keyword: var(--forest-accent-bright);
+  --code-string: #2E7D32;
+  --blockquote-border-color: var(--forest-accent-bright);
+  --blockquote-background-color: var(--forest-bg-primary);
+  --table-header-color: var(--forest-text-heading);
+  --table-header-background: var(--forest-bg-secondary);
+  --table-row-even-background: var(--forest-bg-primary);
+  --table-row-odd-background: var(--forest-bg-deepest);
+  --table-row-hover-background: rgba(46, 125, 50, 0.05);
+  --table-border-color: var(--forest-surface-border);
+  --tag-color: var(--forest-accent-bright);
+  --tag-background: var(--forest-bg-secondary);
+  --tag-background-hover: var(--forest-bg-hover);
+  --tag-border-color: var(--forest-surface-border);
+  --hr-color: var(--forest-surface-divider);
+  --workspace-background-translucent: rgba(240, 245, 236, 0.85);
+}
+
+/* ============================================================
+   暗色模式变量 - Dark Mode
+   背景足够深，文字偏暖绿避免纯白刺眼，对比度≥7:1
+   ============================================================ */
+.theme-dark {
+  /* --- 背景层 Background --- */
+  --forest-bg-deepest: #0D1A0D;
+  --forest-bg-primary: #142414;
+  --forest-bg-secondary: #1A2E1A;
+  --forest-bg-tertiary: #1E341E;
+  --forest-bg-hover: #243824;
+  --forest-bg-active: #2A4A2A;
+
+  /* --- 表面层 Surface --- */
+  --forest-surface-input: #3D5C3D;
+  --forest-surface-button: #4A6B4A;
+  --forest-surface-border: #5A7A5A;
+  --forest-surface-divider: #4A6A4A;
+
+  /* --- 文字层 Text --- */
+  --forest-text-heading: #E8F5E8;
+  --forest-text-primary: #bed9be; /* #C8E0C8 #bed9be */
+  --forest-text-secondary: #A8C8A8;
+  --forest-text-muted: #90B890;
+  --forest-text-faint: #78A078;
+   /* 选中背景：薄荷绿底，35%透明度 */
+  --background-modifier-selected: rgba(168, 230, 168, 1);  
+  /* 选中文字：深绿 */
+  --text-selection: #142414;
+
+  /* --- 强调层 Accent --- */
+  --forest-accent-bright: #6BC96B;
+  --forest-accent-light: #81D681;
+  --forest-accent-pale: #A8E6A8;
+  --forest-accent-success: #81C784;
+
+  /* --- 功能色 Functional --- */
+  --forest-func-error: #EF9A9A;
+  --forest-func-warning: #FFB74D;
+  --forest-func-info: #90C8C8;
+
+  /* --- Obsidian 映射 --- */
+  --background-primary: var(--forest-bg-primary);
+  --background-secondary: var(--forest-bg-secondary);
+  --background-modifier-border: var(--forest-bg-active);
+  --background-modifier-form-field: var(--forest-bg-tertiary);
+  --background-modifier-hover: rgba(107, 201, 107, 0.1);
+  --background-modifier-active: rgba(107, 201, 107, 0.15);
+  --text-normal: var(--forest-text-primary);
+  --text-muted: var(--forest-text-secondary);
+  --text-faint: var(--forest-text-faint);
+  --text-accent: var(--forest-accent-bright);
+  --text-accent-hover: var(--forest-accent-light);
+  --text-error: var(--forest-func-error);
+  --text-warning: var(--forest-func-warning);
+  --text-success: var(--forest-accent-success);
+  --h1-color: var(--forest-accent-pale);
+  --h2-color: var(--forest-accent-light);
+  --h3-color: var(--forest-accent-bright);
+  --h4-color: #5AB85A;
+  --h5-color: #4AA84A;
+  --h6-color: #3A983A;
+  --code-background: var(--forest-bg-deepest);
+  --code-normal: var(--forest-text-primary);
+  --code-comment: var(--forest-text-faint);
+  --code-function: var(--forest-accent-light);
+  --code-keyword: var(--forest-accent-pale);
+  --code-string: var(--forest-accent-light);
+  --blockquote-border-color: var(--forest-accent-bright);
+  --blockquote-background-color: var(--forest-bg-tertiary);
+  --table-header-color: var(--forest-accent-pale);
+  --table-header-background: var(--forest-bg-active);
+  --table-row-even-background: var(--forest-bg-primary);
+  --table-row-odd-background: #162616;
+  --table-row-hover-background: rgba(107, 201, 107, 0.08);
+  --table-border-color: var(--forest-bg-active);
+  --tag-color: var(--forest-accent-light);
+  --tag-background: var(--forest-bg-active);
+  --tag-background-hover: #3A5A3A;
+  --tag-border-color: #4A6A4A;
+  --hr-color: var(--forest-bg-active);
+  --titlebar-background-focused: var(--forest-bg-deepest);
+  --workspace-background-translucent: rgba(20, 36, 20, 0.85);
+  --setting-items-background: var(--forest-bg-primary);
+}
+
+/* ============================================================
+   基础排版
+   ============================================================ */
+:root {
+  --link-arrow-green: #36d377;
+}
+body {
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* ============================================================
+   标题层级 - 统一增加字重和间距
+   ============================================================ */
+h1, .markdown-preview-view h1 {
+  font-weight: 700;
+  border-bottom: 2px solid var(--h1-color);
+  padding-bottom: 0.3em;
+  margin-top: 1.5em;
+  letter-spacing: 0.02em;
+}
+
+h2, .markdown-preview-view h2 {
+  font-weight: 600;
+  border-bottom: 1px solid var(--h2-color);
+  padding-bottom: 0.25em;
+  margin-top: 1.3em;
+  letter-spacing: 0.01em;
+}
+
+h3, .markdown-preview-view h3 {
+  font-weight: 600;
+  margin-top: 1.2em;
+}
+
+h4, .markdown-preview-view h4 {
+  font-weight: 600;
+  margin-top: 1em;
+}
+
+h5, .markdown-preview-view h5,
+h6, .markdown-preview-view h6 {
+  font-weight: 600;
+  margin-top: 0.8em;
+}
+
+/* ============================================================
+   链接 - 增加下划线动画，提高可识别性
+   ============================================================ */
+a, .markdown-preview-view a {
+  color: var(--text-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+a:hover, .markdown-preview-view a:hover {
+  color: var(--text-accent-hover);
+  border-bottom-color: var(--text-accent-hover);
+}
+
+/* ============================================================
+   代码块 - 统一使用森林绿色系，去除突兀青色
+   ============================================================ */
+code {
+  background-color: var(--code-background);
+  color: var(--code-normal);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Source Code Pro", monospace;
+}
+
+pre {
+  background-color: var(--code-background);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 1em;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  color: var(--code-normal);
+}
+
+/* 代码高亮颜色 - 全部使用绿色系 */
+.cm-s-obsidian .cm-comment,
+.markdown-preview-view .token.comment {
+  color: var(--code-comment);
+}
+
+.cm-s-obsidian .cm-keyword,
+.markdown-preview-view .token.keyword {
+  color: var(--code-keyword);
+}
+
+.cm-s-obsidian .cm-string,
+.markdown-preview-view .token.string {
+  color: var(--code-string);
+}
+
+.cm-s-obsidian .cm-function,
+.markdown-preview-view .token.function {
+  color: var(--code-function);
+}
+
+/* ============================================================
+   引用块
+   ============================================================ */
+blockquote {
+  border-left: 4px solid var(--blockquote-border-color);
+  background-color: var(--blockquote-background-color);
+  padding: 0.8em 1.2em;
+  margin: 1em 0;
+  border-radius: 0 6px 6px 0;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   表格 - 增加悬停反馈
+   ============================================================ */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: var(--table-header-background);
+}
+
+th {
+  color: var(--table-header-color);
+  font-weight: 600;
+  padding: 0.8em 1em;
+  border: 1px solid var(--table-border-color);
+}
+
+td {
+  padding: 0.6em 1em;
+  border: 1px solid var(--table-border-color);
+}
+
+tr:nth-child(even) {
+  background-color: var(--table-row-even-background);
+}
+
+tr:nth-child(odd) {
+  background-color: var(--table-row-odd-background);
+}
+
+tr:hover {
+  background-color: var(--table-row-hover-background);
+}
+
+/* ============================================================
+   标签
+   ============================================================ */
+a.tag {
+  color: var(--tag-color);
+  background-color: var(--tag-background);
+  border: 1px solid var(--tag-border-color);
+  padding: 0.2em 0.6em;
+  border-radius: 12px;
+  font-size: 0.85em;
+  transition: all 0.2s ease;
+}
+
+a.tag:hover {
+  background-color: var(--tag-background-hover);
+}
+
+/* ============================================================
+   分割线
+   ============================================================ */
+hr {
+  border: none;
+  border-top: 2px solid var(--hr-color);
+  margin: 2em 0;
+}
+
+/* ============================================================
+   复选框 - 使用强调色
+   ============================================================ */
+input[type="checkbox"] {
+  accent-color: var(--forest-accent-bright);
+}
+
+.task-list-item-checkbox {
+  accent-color: var(--forest-accent-bright);
+}
+
+/* ============================================================
+   滚动条 - 柔和过渡
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}
+
+/* 编辑模式选中 */
+::selection {
+  background-color: rgba(144,200,200,0.45) !important;
+  color: var(--forest-text-heading);
+}
+.cm-s-obsidian .cm-selection,
+.cm-s-obsidian .cm-selection-background {
+  background-color: var(--background-modifier-selected) !important;
+}
+
+/* 预览模式选中 */
+.markdown-preview-view ::selection {
+  background-color: var(--background-modifier-selected) !important;
+  color: var(--text-selection) !important;
+}
+/* ============================================================
+   高亮标记
+   ============================================================ */
+mark, .markdown-preview-view mark {
+  background-color: rgba(107, 201, 107, 0.15);
+  color: var(--text-normal);
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+}
+
+.theme-light mark,
+.theme-light .markdown-preview-view mark {
+  background-color: rgba(46, 125, 50, 0.12);
+}
+
+/* ============================================================
+   嵌入内容
+   ============================================================ */
+.markdown-embed {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 1em;
+  background-color: var(--background-secondary);
+}
+
+.markdown-embed-title {
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+/* ============================================================
+   下拉框与表单
+   ============================================================ */
+select.dropdown {
+  background-color: var(--forest-surface-input);
+  color: var(--forest-text-primary);
+  border: 1px solid var(--forest-surface-border);
+  border-radius: 4px;
+  padding: 0.3em 0.6em;
+}
+
+.theme-light select.dropdown {
+  background-color: var(--forest-surface-input);
+  color: var(--forest-text-primary);
+}
+
+/* ============================================================
+   文件树底部留白
+   ============================================================ */
+.nav-files-container {
+  padding-bottom: 80px !important;
+}
+
+/* ============================================================
+   设置项按钮
+   ============================================================ */
+.setting-item button {
+  background-color: var(--tag-background) !important;
+  color: var(--tag-color) !important;
+  border: 1px solid var(--tag-border-color) !important;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.setting-item button:hover {
+  background-color: var(--tag-background-hover) !important;
+}
+
+/* ============================================================
+   复制按钮 - 透明背景
+   ============================================================ */
+pre > button,
+.copy-button {
+  background: transparent !important;
+  color: var(--text-muted) !important;
+}
+
+pre > button:hover,
+.copy-button:hover {
+  color: var(--text-accent) !important;
+}
+
+/* ============================================================
+   代码块顶部内边距（为复制按钮留空间）
+   ============================================================ */
+.markdown-preview-view pre {
+  padding-top: 32px !important;
+}
+

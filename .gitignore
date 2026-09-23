@@ -1,0 +1,44 @@
+public/
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+
+# Obsidian 配置：*.JSON  例外同步主题色
+.obsidian/*.json
+!.obsidian/appearance.json
+!.obsidian/app.json
+
+# Obsidian 插件：保留插件本体，忽略个人配置
+.obsidian/plugins/obsidian-git/data.json
+.obsidian/plugins/*/data.json
+.obsidian/plugins/*/data-*.json
+.obsidian/plugins/*/cache/
+.obsidian/plugins/obsidian-git/dist/
+.obsidian/plugins/obsidian-git/backup/
+
+# Hugo 构建时的临时锁文件，不应提交
+.hugo_build.lock
+.trash
+.out/
+
+# Hugo 图片处理缓存（根目录），
+# 注意不能写 resources/ 否则会吞掉 content/resources/
+/resources/
+
+# 本地/CI 临时状态目录
+.state/
+/tmp/
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统
+.DS_Store
+
+# Python 虚拟环境
+.venv/
+venv/
+
+# Node（如果以后用到）
+node_modules/

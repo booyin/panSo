@@ -1,0 +1,9 @@
+{
+  "newFileLocation": "folder",
+  "newFileFolderPath": "A1",
+  "attachmentFolderPath": "assets/images",
+  "mobilePullAction": "workspace:close",
+  "propertiesInDocument": "visible",
+  "promptDelete": false,
+  "alwaysUpdateLinks": true
+}

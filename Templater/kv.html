@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>网盘资料库</title>
+  <style>
+    /* :root {
+      --bg: #fafaf7;
+      --card: #ffffff;
+      --text: #181a1e;
+      --muted: #787e88;
+      --border: #e9e9e4;
+      --accent: #2f5fe0;
+      --accent-soft: #eef2fd;
+      --hot: #e11d48;
+      --thumb: #f1f2ee;
+      --shadow: 0 1px 3px rgba(20, 24, 40, .05);
+      --radius: 10px;
+    } */
+
+    :root {
+      --bg: #f7f3ed;
+      --card: #ffffff;
+      --text: #2c2620;
+      --muted: #787066;
+      --border: #e6e0d8;
+      --accent: #a67c52;
+      --accent-soft: #f3e9df;
+      --hot: #b85448;
+      --thumb: #efe8df;
+      --shadow: 0 2px 10px rgba(44, 38, 32, 0.07);
+      --radius: 12px;
+    }
+
+
+    [data-theme="dark"] {
+      --bg: #09090b;
+      --card: #18181b;
+      --text: #fafafa;
+      --muted: #a1a1aa;
+      --border: #27272a;
+      --accent: #818cf8;
+      --accent-soft: #1e1b4b;
+      --hot: #f43f5e;
+      --thumb: #27272a;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      transition: background .2s, color .2s;
+    }
+
+    a {
+      color: inherit
+    }
+
+    /* ===== Header ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .logo a {
+      text-decoration: none
+    }
+
+    .tabs {
+      display: flex;
+      gap: 2px;
+      flex: 1;
+      overflow: hidden
+    }
+
+    .tab {
+      padding: 6px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tab:hover {
+      color: var(--text);
+      background: var(--thumb)
+    }
+
+    .tab.active {
+      color: var(--accent);
+      background: var(--accent-soft)
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 0 1 240px;
+      min-width: 0
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 7px 12px 7px 32px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+      transition: border-color .15s;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--accent)
+    }
+
+    .search-wrap::before {
+      content: "🔍";
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      opacity: .6;
+      pointer-events: none;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      transition: border-color .15s, color .15s;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .hamburger {
+      display: none
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 16px 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-menu.open {
+      display: flex
+    }
+
+    /* ===== 布局 ===== */
+    .layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 16px;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) 220px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 76px
+    }
+
+    .sidebar h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin: 0 0 10px;
+      font-weight: 600;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px
+    }
+
+    .sidebar li {
+      margin: 1px 0
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 6px 10px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .sidebar a:hover {
+      background: var(--thumb);
+      color: var(--text)
+    }
+
+    .sidebar a.active {
+      background: var(--accent-soft);
+      color: var(--accent)
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .stat-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.2
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px
+    }
+
+    /* ===== Content ===== */
+    .content {
+      min-width: 0
+    }
+
+    /* 轮播 */
+    .carousel-wrap {
+      margin-bottom: 20px
+    }
+
+    .carousel-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin: 0 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .carousel-title::before {
+      content: "🔥";
+      font-size: 14px
+    }
+
+    .carousel {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+      scroll-behavior: smooth;
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none
+    }
+
+    .carousel .card {
+      flex: 0 0 280px;
+      scroll-snap-align: start
+    }
+
+    /* 列表 */
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    /* 卡片 */
+    .card {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow)
+    }
+
+    .card-thumb {
+      flex: 0 0 56px;
+      height: 48px;
+      background: var(--thumb);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-align: center;
+      line-height: 1.1;
+      padding: 2px;
+      overflow: hidden;
+    }
+
+    .card-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .card-meta>* {
+      flex-shrink: 0
+    }
+
+    .card-meta .tag {
+      padding: 1px 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .card-meta .hot {
+      color: var(--hot);
+      font-weight: 600
+    }
+
+    /* 空态 & 计数 */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .count {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 10px
+    }
+
+    /* ===== 移动端 ===== */
+    @media (max-width:900px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 0
+      }
+
+      .sidebar {
+        display: none
+      }
+
+      .tabs {
+        display: none
+      }
+
+      .hamburger {
+        display: flex
+      }
+
+      .search-wrap {
+        flex: 1
+      }
+
+      .logo {
+        font-size: 15px
+      }
+
+      .carousel .card {
+        flex: 0 0 240px
+      }
+    }
+
+    /* KV 管理页专属 */
+    .card {
+      cursor: default
+    }
+
+    .card-del {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 22px;
+      height: 22px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s, color .15s;
+    }
+
+    .card-del:hover {
+      background: #ef4444;
+      color: #fff
+    }
+
+    .card.removed {
+      opacity: .4;
+      pointer-events: none
+    }
+
+    .card.removed .card-del {
+      display: none
+    }
+
+    /* 弹窗 */
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-mask.open {
+      display: flex
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .3);
+    }
+
+    .modal h3 {
+      margin: 0 0 12px;
+      font-size: 16px
+    }
+
+    .modal .m-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 4px
+    }
+
+    .modal .m-uid {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: ui-monospace, monospace;
+      margin: 0 0 12px
+    }
+
+    .modal label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px
+    }
+
+    .modal input {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 14px;
+    }
+
+    .modal input:focus {
+      border-color: var(--accent)
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end
+    }
+
+    .modal-actions button {
+      padding: 7px 14px;
+      font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .modal-actions .btn-danger {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff
+    }
+
+    .modal-actions button:hover {
+      opacity: .85
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-inner">
+      <button class="icon-btn hamburger" id="hamburger" aria-label="菜单">☰</button>
+      <h1 class="logo"><a href="/">📚 网盘资料库</a></h1>
+      <nav class="tabs" id="tabs"></nav>
+      <div class="search-wrap">
+        <input type="search" id="q" placeholder="搜索资料..." autocomplete="off">
+      </div>
+      <button class="icon-btn" id="themeToggle" aria-label="切换主题">🌙</button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu"></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>分类</h3>
+      <ul id="tagList"></ul>
+    </aside>
+
+    <main class="content">
+      <section class="carousel-wrap" id="carouselWrap" style="display:none">
+        <h2 class="carousel-title">热门推荐</h2>
+        <div class="carousel" id="carousel"></div>
+      </section>
+      <div class="count" id="count"></div>
+      <div class="list" id="list"></div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="stat">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">资料总数</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statHot">0</div>
+        <div class="stat-label">累计热度</div>
+      </div>
+      <h3>关于</h3>
+      <ul>
+        <li><a href="/privacy">隐私说明</a></li>
+        <li><a href="/takedown">失效反馈</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <!-- 弹窗 -->
+  <div class="modal-mask" id="modalMask">
+    <div class="modal">
+      <h3>确认下架</h3>
+      <p class="m-title" id="mTitle"></p>
+      <p class="m-uid" id="mUid"></p>
+      <label>备注（可选）</label>
+      <input type="text" id="mNote" placeholder="如：原创作者投诉 / 链接失效">
+      <div class="modal-actions">
+        <button id="mCancel">取消</button>
+        <button class="btn-danger" id="mConfirm">确认下架</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./fuse.min.js"></script>
+  <script>
+    /* ===== 主题 ===== */
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme')
+      || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = savedTheme;
+    themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.onclick = () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+    };
+
+    /* ===== 汉堡菜单 ===== */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.onclick = () => mobileMenu.classList.toggle('open');
+
+    /* ===== 状态 ===== */
+    let ALL = [], FUSE = null, activeTag = '', carouselTimer = null;
+    const $q = document.getElementById('q');
+    const $list = document.getElementById('list');
+    const $count = document.getElementById('count');
+    const $carousel = document.getElementById('carousel');
+    const $carouselWrap = document.getElementById('carouselWrap');
+
+    /* ===== 加载索引 ===== */
+    fetch('/search-index.json?v=' + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        ALL = data;
+        FUSE = new Fuse(ALL, {
+          keys: [
+            { name: 'title', weight: 0.5 },
+            { name: 'tags', weight: 0.25 },
+            { name: 'desc', weight: 0.15 },
+            { name: 'text', weight: 0.1 }
+          ],
+          threshold: 0.35, ignoreLocation: true, minMatchCharLength: 1
+        });
+        initTags();
+        render();
+        startCarousel();
+      })
+      .catch(e => {
+        $list.innerHTML = '<div class="empty">索引加载失败：' + esc(e.message) + '</div>';
+      });
+
+    /* ===== 标签 ===== */
+    function initTags() {
+      const set = new Set();
+      ALL.forEach(x => (x.tags || []).forEach(t => set.add(t)));
+      const tags = ['全部', ...[...set].sort()];
+
+      document.getElementById('tagList').innerHTML = tags.map(t =>
+        `<li><a data-tag="${esc(t)}" class="${t === '全部' ? 'active' : ''}">${esc(t)}</a></li>`
+      ).join('');
+
+      document.getElementById('tabs').innerHTML = tags.slice(0, 6).map(t =>
+        `<button class="tab ${t === '全部' ? 'active' : ''}" data-tag="${esc(t)}">${esc(t)}</button>`
+      ).join('');
+
+      mobileMenu.innerHTML = tags.map(t =>
+        `<button class="tab ${t === '全部' ? 'active' : ''}" data-tag="${esc(t)}">${esc(t)}</button>`
+      ).join('');
+
+      document.querySelectorAll('[data-tag]').forEach(el => {
+        el.onclick = () => {
+          activeTag = el.dataset.tag === '全部' ? '' : el.dataset.tag;
+          document.querySelectorAll('[data-tag]').forEach(x => {
+            const isActive = (x.dataset.tag === '全部' && !activeTag)
+              || x.dataset.tag === activeTag;
+            x.classList.toggle('active', isActive);
+          });
+          mobileMenu.classList.remove('open');
+          render();
+          startCarousel();
+        };
+      });
+    }
+
+    /* ===== 搜索 ===== */
+    let timer;
+    $q.oninput = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { render(); startCarousel(); }, 150);
+    };
+
+    /* ===== 渲染 ===== */
+    function render() {
+      const q = $q.value.trim();
+      let items = q ? FUSE.search(q).map(r => r.item)
+        : ALL.filter(x => x.listVisible);
+      if (activeTag) items = items.filter(x => (x.tags || []).includes(activeTag));
+      items.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+      $count.textContent = '共 ' + items.length + ' 条'
+        + (q ? ' · 关键词：' + q : '')
+        + (activeTag ? ' · 标签：' + activeTag : '');
+      document.getElementById('statTotal').textContent = ALL.length;
+      document.getElementById('statHot').textContent =
+        ALL.reduce((s, x) => s + (x.hot || 0), 0);
+
+      if (!items.length) {
+        $list.innerHTML = '<div class="empty">没有找到相关资料</div>';
+        $carouselWrap.style.display = 'none';
+        return;
+      }
+
+      // 轮播：热度前 6，仅在无搜索时显示
+      const hot = [...items].sort((a, b) => (b.hot || 0) - (a.hot || 0)).slice(0, 6);
+      if (!q && hot.length > 1) {
+        $carouselWrap.style.display = '';
+        $carousel.innerHTML = hot.map(renderCard).join('');
+      } else {
+        $carouselWrap.style.display = 'none';
+      }
+
+      $list.innerHTML = items.map(renderCard).join('');
+    }
+
+    /* ===== 卡片 ===== */
+    function renderCard(x) {
+      const main = (x.links && x.links[0]) || {};
+      const panShort = (main.panName || '网盘').replace(/网盘$/, '');
+      const tags = (x.tags || []).slice(0, 2)
+        .map(t => `<span class="tag">${esc(t)}</span>`).join('');
+      const removed = isRemoved(x.uid) ? ' removed' : '';
+
+      return `<div class="card${removed}" data-uid="${esc(x.uid)}" data-title="${esc(x.title)}">
+    <button class="card-del" title="下架">×</button>
+    <div class="card-thumb">${esc(panShort)}</div>
+    <div class="card-body">
+      <h3 class="card-title">${esc(x.title)}</h3>
+      <div class="card-meta">
+        ${main.panName ? `<span>${esc(main.panName)}</span>` : ''}
+        ${x.date ? `<span>${esc(x.date)}</span>` : ''}
+        ${x.size ? `<span>${esc(x.size)}</span>` : ''}
+        ${tags}
+        ${x.hot ? `<span class="hot">🔥 ${x.hot}</span>` : ''}
+      </div>
+    </div>
+  </div>`;
+    }
+
+    /* ===== 转义 ===== */
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    /* ===== 轮播自动播放 ===== */
+    function startCarousel() {
+      stopCarousel();
+      const track = $carousel;
+      if (!track || track.children.length < 2) return;
+      carouselTimer = setInterval(() => {
+        if (track.scrollWidth <= track.clientWidth) return;
+        const next = track.scrollLeft + track.clientWidth / 2;
+        if (next >= track.scrollWidth - track.clientWidth - 4) {
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          track.scrollTo({ left: next, behavior: 'smooth' });
+        }
+      }, 4000);
+
+      ['mouseenter', 'touchstart', 'focusin'].forEach(ev =>
+        track.addEventListener(ev, stopCarousel, { passive: true }));
+      ['mouseleave', 'touchend', 'focusout'].forEach(ev =>
+        track.addEventListener(ev, startCarousel, { passive: true }));
+    }
+    function stopCarousel() { clearInterval(carouselTimer); }
+
+    /* ===== KV 管理：下架 ===== */
+    const OFFLINE_KEY = 'offline_marks';
+    function getMarks() {
+      try { return JSON.parse(localStorage.getItem(OFFLINE_KEY) || '{}'); }
+      catch { return {}; }
+    }
+    function setMark(uid, note) {
+      const m = getMarks();
+      m[uid] = { note, ts: new Date().toISOString() };
+      localStorage.setItem(OFFLINE_KEY, JSON.stringify(m));
+    }
+    function isRemoved(uid) { return !!getMarks()[uid]; }
+
+    const $mask = document.getElementById('modalMask');
+    const $mTitle = document.getElementById('mTitle');
+    const $mUid = document.getElementById('mUid');
+    const $mNote = document.getElementById('mNote');
+    let pendingUid = '', pendingTitle = '';
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.card-del');
+      if (!btn) return;
+      e.stopPropagation();
+      const card = btn.closest('.card');
+      pendingUid = card.dataset.uid;
+      pendingTitle = card.dataset.title;
+      $mTitle.textContent = pendingTitle;
+      $mUid.textContent = pendingUid;
+      $mNote.value = '';
+      $mask.classList.add('open');
+      setTimeout(() => $mNote.focus(), 50);
+    });
+
+    document.getElementById('mCancel').onclick = () => $mask.classList.remove('open');
+    $mask.onclick = e => { if (e.target === $mask) $mask.classList.remove('open'); };
+
+    document.getElementById('mConfirm').onclick = async () => {
+      const note = $mNote.value.trim();
+      setMark(pendingUid, note);
+
+      // 生成下架命令
+      const cmd = `node scripts/offline.mjs ${pendingUid}`;
+      try { await navigator.clipboard.writeText(cmd); }
+      catch { }
+
+      // 更新卡片
+      const card = document.querySelector(`.card[data-uid="${pendingUid}"]`);
+      if (card) card.classList.add('removed');
+
+      $mask.classList.remove('open');
+      alert(
+        '已标记下架。\n\n' +
+        '命令已复制到剪贴板，请在终端执行：\n\n' + cmd + '\n\n' +
+        '然后到 content/_offline.md 加一行：\n\n' + pendingUid
+      );
+    };
+  </script>
+</body>
+
+</html>

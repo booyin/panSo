@@ -1,0 +1,54 @@
+baseURL = "https://panSo.L.cd/"
+languageCode = "zh-cn"
+title = "panSo.L.cd"
+timeZone = "Asia/Shanghai"
+
+buildFuture = true
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[params]
+  description = "实用干货｜资源｜AI工具｜软件｜模板｜学习资料"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "index"
+  isPlainText = true
+  notAlternative = true
+
+[[menu.main]]
+  name = "全部资源"
+  url = "/resources/"
+  weight = 1
+
+# 以下几条 name 要跟你笔记 categories 里实际用的分类名完全一致
+# url 随便填个占位符就行，模板会自动纠正成真实分类页地址
+[[menu.main]]
+  name = "AI工具"
+  url = "#"
+  weight = 2
+
+[[menu.main]]
+  name = "软件"
+  url = "#"
+  weight = 3
+
+[[menu.main]]
+  name = "模板"
+  url = "#"
+  weight = 4
+
+[[menu.main]]
+  name = "学习"
+  url = "#"
+  weight = 5
+
+[[menu.main]]
+  name = "合集"
+  url = "#"
+  weight = 6
